@@ -1,20 +1,21 @@
-import json
-from fastapi.encoders import jsonable_encoder
-from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.responses import JSONResponse
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
+# @author by wangcw
+# @generate at 2023/9/20 14:46
+
+from __future__ import annotations
 
 from app.core.db import get_db
+from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
 
-router = APIRouter()
 
-
-@router.get("/cumulative", tags=["业务累计服务信息"])
-async def view_cumulative(db: AsyncSession = Depends(get_db)):
+async def cumulative(db: AsyncSession = Depends(get_db)):
+    print("调用第一步！")
     sql = text(
         """
-    SELECT JSON_ARRAYAGG(S.J) AS data
+    SELECT JSON_ARRAYAGG(S.J)
     FROM (
     SELECT ProviderCode,JSON_OBJECT("backgroundColor", "rgba(55, 137, 224, 0.2)",
         "prefixText", "下单总量",
@@ -68,13 +69,13 @@ async def view_cumulative(db: AsyncSession = Depends(get_db)):
     )
 
     try:
+        print("进try了！")
         res = await db.execute(sql)
+        print("0", res)
         result = list(res.mappings())
-        if result:
-            result = json.loads(jsonable_encoder(result[0].get("data")))
-            return result
-        else:
-            return ()
+        print("1", result)
+        result = dict(data=result)
+        print("2", result)
     except Exception as e:
-        e = dict(error=e)
-        return e
+        print(e)
+    return dict(status="seuccess!")

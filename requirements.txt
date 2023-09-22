@@ -60,3 +60,8 @@ uvicorn==0.23.2
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
+
+SQLAlchemy~=2.0.21
+pytest~=7.4.0
+aiomysql==0.2.0
+greenlet==2.0.2

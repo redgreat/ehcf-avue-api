@@ -1,4 +1,1 @@
-# fastapi-test
-fastapi测试学习
-
-fork from [fastapi-nano](https://github.com/rednafi/fastapi-nano)
+壹好车服项目智能工单大屏数据提供API
