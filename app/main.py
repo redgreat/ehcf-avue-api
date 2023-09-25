@@ -18,7 +18,6 @@ app.add_middleware(
 # 权限验证
 @app.middleware("http")
 async def verify_app_key(request: Request, call_next):
-    print("请求地址来源：", request.url)
     if request.url.path in ["/docs", "/openapi.json"]:
         response = await call_next(request)
     else:
