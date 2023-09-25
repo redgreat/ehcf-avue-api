@@ -6,19 +6,10 @@ from starlette.responses import JSONResponse
 
 app = FastAPI()
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 
 # 权限验证
 @app.middleware("http")
 async def verify_app_key(request: Request, call_next):
-    print("开始验证！")
     if request.url.path in ["/docs", "/openapi.json"]:
         response = await call_next(request)
     else:
@@ -28,5 +19,13 @@ async def verify_app_key(request: Request, call_next):
         response = await call_next(request)
     return response
 
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(views.router)
